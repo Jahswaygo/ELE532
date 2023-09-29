@@ -114,6 +114,29 @@ t = 1/2*(t + 1/4)
 n4_t = n(t)
 plot(n4_t, t, newGraph=False, color='r', functionLabel='n4(t) = n3(1/2 t)')
 
+
+#C. Visualizing operations on the independent variable and algorithm vectorization
+
+#Problem C.1
+
+
+#Problem C.2
+
+
+#Problem C.3
+
+
+#D. Array indexing
+
+#Problem D.1
+
+
+#Problem D.2
+
+
+#Problem D.3
+
+
 # Display all plots
 plt.show()
 # End of code
