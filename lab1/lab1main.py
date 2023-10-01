@@ -67,7 +67,7 @@ plt.xticks(np.arange(-2, 2.01, 1))
 # A.2 plot
 t = np.linspace(-2, 2, 5)
 f_t = np.exp(t)
-plot(f_t, t, title='A.2: Generated Plot Vs Figure 1.46', functionLabel='e^(-t)')
+plot(f_t, t, title='A.3: Generated Plot Vs Figure 1.46', functionLabel='e^(-t)')
 plt.xticks(np.arange(-2, 2.01, 1))
 # SuperImpose Figure 1.46 from A,1
 t = np.linspace(-2, 2, 8)
@@ -175,7 +175,7 @@ data = sci.loadmat('lab1\ELE532_Lab1_Data.mat')
 #Load data
 A = data['A']
 B = data['B']
-array_x_audio = data['x_audio']
+x_audio = data['x_audio']
 
 #Problem D.1 : Modifications to Array A
 #(a) A(:)
@@ -189,25 +189,25 @@ b = A.flatten()[b_indexes]
 print("\n(b) Extracted elements based on index:")
 print(b)
 
-#(c)
+#(c) [ A >= 0.2 ]
 c_mask = A >= 0.2
 print("\n(c) Boolean mask for all elements >= 0.2:")
 print(c_mask)
 
-#(d)
+#(d) A([ A >= 0.2 ])
 d = A[c_mask]
 print("\n(d) Extracted elements where A >= 0.2:")
 print(d)
 
-#(e)
+#(e) A([ A >= 0.2 ]) = 0
 A[c_mask] = 0
 print("\n(e) Setting elements >= 0.2 to 0:")
 print(A)
 
 #Problem D.2
 rows, cols = B.shape
+
 #(a) Set values below 0.01 to zero
-#(c) Check execution time
 start = time.time()
 for i in range(rows):
     for j in range(cols):
@@ -222,11 +222,12 @@ B[B < 0.01] = 0
 end = time.time()
 IndexTime = end - start
 
-print("\nNested Time: " + str(nestedTime) + "\nIndex time:" + str(IndexTime) + "\n")
+#(c) Check execution time
+print("\nNested Time: " + str(nestedTime) + "\nIndex  Time: " + str(IndexTime) + "\n")
 
 #Problem D.3
 #Create a Copy of the data
-audio_X = np.copy(array_x_audio)
+audio_X = np.copy(x_audio)
 
 #Threshold for compression
 threshold = 0.1
@@ -244,7 +245,7 @@ for i in range(len(audio_X)):
 print(f"\nNumber of zero-valued samples: {zero_samples}")
 
 #Play the original audio
-sd.play(array_x_audio, 8000)
+sd.play(x_audio, 8000)
 sd.wait()
 
 #Play the compressed audio
