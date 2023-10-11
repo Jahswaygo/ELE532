@@ -92,7 +92,7 @@ lambda_ = CH2MP2([1e4, 1e4, 1e4],[1e-9, 1e-6])
 
 plt.show()
 
-"""""
+
 #Part B:
 #Problem B.1
 # Specify the primary and alternate file paths
@@ -108,7 +108,7 @@ else:
 
 eng = matlab.engine.start_matlab()
 eng.eval(f"run('{script_path}')", nargout=0)
-"""""
+
 #Problem B.2
 #Defining functions
 x = lambda t: np.heaviside(t , 1) - np.heaviside(t - 2, 1)
@@ -204,9 +204,10 @@ plt.show()
 #Problem C.2
 #Define the Variables
 s = sp.symbols('s')
+t = sp.symbols('t')
 
 # Define your time functions with unit step functions
-u_t = sp.Piecewise((1, t >= 0), (0, True))
+u_t = sp.Heaviside(t)
 
 #Calculate the Laplace transform
 def h1(t):
@@ -222,16 +223,16 @@ def h4(t):
     return 4 * (sp.exp(-t / 5) - sp.exp(-t)) * u_t
 
 # Calculate the Laplace transforms for h1(t) to h4(t)
-H1_s = sp.laplace_transform(h1(t), t, s)
-H2_s = sp.laplace_transform(h2(t), t, s)
-H3_s = sp.laplace_transform(h3(t), t, s)
-H4_s = sp.laplace_transform(h4(t), t, s)
+H1_s = "exp(t/5)/(s-1)"
+H2_s = "4*exp(-t/5)/(s+1)"
+H3_s = "4/(s+1)"
+H4_s = "4*((1/(s+1))-(1/(s-1)))"
 
-# Calculate the eigenvalues (poles) of the transfer functions
-eigenvalues_H1 = sp.roots(sp.denom(H1_s), s)
-eigenvalues_H2 = sp.roots(sp.denom(H2_s), s)
-eigenvalues_H3 = sp.roots(sp.denom(H3_s), s)
-eigenvalues_H4 = sp.roots(sp.denom(H4_s), s)
+# Calculate the eigenvalues (poles) using MATLAB
+eigenvalues_H1 = eng.roots(H1_s)
+eigenvalues_H2 = eng.roots(H2_s)
+eigenvalues_H3 = eng.roots(H3_s)
+eigenvalues_H4 = eng.roots(H4_s)
 
 # Print the eigenvalues for each system
 print("Eigenvalues (Poles) for S1:", eigenvalues_H1)
