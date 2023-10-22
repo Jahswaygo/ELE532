@@ -323,7 +323,18 @@ plt.show()
 
 
 #Problem C.2
+#S1:
+eigenvalue_1 = 1/5
 
+#S2:
+eigenvalue_2 = -(1/5)
+
+#S3:
+eigenvalue_3 = -1
+
+#S4:
+eigenvalue_4a = -(1/5)
+eigenvalue_4b = -1
 
 #Problem C.3
 
@@ -332,9 +343,10 @@ plt.show()
 
 #Part D:
 #Problem D.1
-
+#Too long for 2 marks.
 
 #Problem D.2
+#When two signals are convolved, the resulting signal's duration is equal to the sum of the durations of the original functions.
 
 #Show Remaining plots
 plt.show()
