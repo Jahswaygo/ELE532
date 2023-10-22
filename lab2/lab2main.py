@@ -10,9 +10,6 @@ import scipy.io as sci
 import matplotlib.pyplot as plt
 import sounddevice as sd
 import matlab.engine
-from scipy.linalg import eigvals
-from scipy.signal import lti, step
-
 
 #Variable Declaration
 color='g'
@@ -51,9 +48,10 @@ def plot(f_t, t, newGraph=True, figsize=(12.0, 6.0), title='', functionLabel='',
     plt.legend()
     plt.tight_layout()
 
+
+
 #Part A:
 #Problem A.1
-
 #Define values
 R = [1e4, 1e4, 1e4]
 C = [1e-6, 1e-6]
@@ -77,8 +75,8 @@ h = lambda t: (C[0] * np.exp(lambda_values[0] * t) + C[1] * np.exp(lambda_values
 #h(t) Plotted
 plot(h(t), t, title='Problem A: Characteristic Response', functionLabel='h(t)', xLabel='Time [s]', yLabel='Amplitude')
 
-#Problem A.3   
 
+#Problem A.3   
 def CH2MP2(R, C):
     #Coefficients for the characteristic equation
     A = [1, (1/R[0] + 1/R[1] + 1/R[2]) / C[1], 1 / (R[0] * R[1] * C[0] * C[1])]
@@ -93,28 +91,30 @@ lambda_ = CH2MP2([1e4, 1e4, 1e4],[1e-9, 1e-6])
 plt.show()
 
 
+
 #Part B:
 #Problem B.1
-# Specify the primary and alternate file paths
+#Specify the primary and alternate file paths
 primary_script_path = '/Users/jah/Documents/GitHub/ELE532/lab2/CH2MP4.m'
 alternate_script_path = 'C:\\Users\\Jahmil\\Desktop\\Coding_Projects\\ELE532\\lab2\\CH2MP4.m'
 
-# Check if the file exists in the primary location
+#Check if the file exists in the primary location
 if os.path.exists(primary_script_path):
     script_path = primary_script_path
 else:
-    # If not, use the alternate location
+    #If not, use the alternate location
     script_path = alternate_script_path
 
 eng = matlab.engine.start_matlab()
 eng.eval(f"run('{script_path}')", nargout=0)
+
 
 #Problem B.2
 #Defining functions
 x = lambda t: np.heaviside(t , 1) - np.heaviside(t - 2, 1)
 h = lambda t: (t+1) * (np.heaviside(t + 1, 1) - np.heaviside(t, 1))
 
-# Defining time vector
+#Defining time vector
 t = np.arange(-2, 5, 0.01)
 
 x_t = x(t)
@@ -124,24 +124,23 @@ y_t = np.convolve(x_t, h_t, 'same') * 0.01
 
 plt.figure(figsize=(6, 14))
 
-
-# Subplot for x(t)
+#Subplot for x(t)
 plt.subplot(3, 1, 1)
-plt.plot(t, x(t), label='x(t)')
+plt.plot(t, x_t, label='x(t)')
 plt.title('x(t)')
 plt.xlabel('Time')
 plt.ylabel('Amplitude')
 plt.grid(True)
 
-# Subplot for h(t)
+#Subplot for h(t)
 plt.subplot(3, 1, 2)
-plt.plot(t, h(t), label='h(t)')
+plt.plot(t, h_t, label='h(t)')
 plt.title('h(t)')
 plt.xlabel('Time')
 plt.ylabel('Amplitude')
 plt.grid(True)
 
-# Subplot for y(t)
+#Subplot for y(t)
 plt.subplot(3, 1, 3)
 plt.plot(t, y_t)
 plt.title('y(t)')
@@ -153,7 +152,122 @@ plt.subplots_adjust(hspace=0.5)
 
 plt.show()
 
+
 #Problem B.3    
+#Part a)
+t = np.linspace(-10, 10, 1000)
+x1 = lambda t: (np.heaviside(t - 4, 0.5) - np.heaviside(t - 6, 0.5))
+x2 = lambda t: (np.heaviside(t + 5, 0.5) - np.heaviside(t + 4, 0.5))
+
+x1_t = x1(t)
+x2_t = x2(t)
+
+convolution = np.convolve(x1_t, x2_t, 'same') * (t[1]-t[0])  # Multiply by dt for integration
+
+plt.figure(figsize=(6, 14))
+
+#Subplot for x1(t)
+plt.subplot(3, 1, 1)
+plt.plot(t, x1_t)
+plt.title('x1(t)')
+plt.xlabel('Time')
+plt.ylabel('Amplitude')
+plt.grid(True)
+
+#Subplot for x2(t)
+plt.subplot(3, 1, 2)
+plt.plot(t, x2_t)
+plt.title('x2(t)')
+plt.xlabel('Time')
+plt.ylabel('Amplitude')
+plt.grid(True)
+
+#Subplot for convolution
+plt.subplot(3, 1, 3)
+plt.plot(t, convolution)
+plt.title('Convolution of x1(t) and x2(t)')
+plt.xlabel('Time')
+plt.ylabel('Amplitude')
+plt.grid(True)
+
+plt.subplots_adjust(hspace=0.5)
+
+#Part b)
+t = np.linspace(-10, 10, 1000)
+x1 = lambda t: (np.heaviside(t - 3, 0.5) - np.heaviside(t - 5, 0.5))
+x2 = lambda t: (np.heaviside(t + 5, 0.5) - np.heaviside(t + 3, 0.5))
+
+x1_t = x1(t)
+x2_t = x2(t)
+
+convolution = np.convolve(x1_t, x2_t, 'same') * (t[1]-t[0])  # Multiply by dt for integration
+
+plt.figure(figsize=(6, 14))
+
+#Subplot for x1(t)
+plt.subplot(3, 1, 1)
+plt.plot(t, x1_t)
+plt.title('x1(t)')
+plt.xlabel('Time')
+plt.ylabel('Amplitude')
+plt.grid(True)
+
+#Subplot for x2(t)
+plt.subplot(3, 1, 2)
+plt.plot(t, x2_t)
+plt.title('x2(t)')
+plt.xlabel('Time')
+plt.ylabel('Amplitude')
+plt.grid(True)
+
+#Subplot for convolution
+plt.subplot(3, 1, 3)
+plt.plot(t, convolution)
+plt.title('Convolution of x1(t) and x2(t)')
+plt.xlabel('Time')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.subplots_adjust(hspace=0.5)
+
+#Part h)
+t = np.linspace(-4, 3, 1000)  #Extended to capture both functions
+x1 = lambda t: np.exp(t) * (np.heaviside(t + 2, 0.5) - np.heaviside(t, 0.5))
+x2 = lambda t: np.exp(-2 * t) * (np.heaviside(t, 0.5) - np.heaviside(t - 1, 0.5))
+
+x1_t = x1(t)
+x2_t = x2(t)
+
+convolution = np.convolve(x1_t, x2_t, 'same') * (t[1]-t[0])  # Multiply by dt for integration
+
+plt.figure(figsize=(6, 14))
+
+# Subplot for x1(t)
+plt.subplot(3, 1, 1)
+plt.plot(t, x1_t)
+plt.title('x1(t)')
+plt.xlabel('Time')
+plt.ylabel('Amplitude')
+plt.grid(True)
+
+# Subplot for x2(t)
+plt.subplot(3, 1, 2)
+plt.plot(t, x2_t)
+plt.title('x2(t)')
+plt.xlabel('Time')
+plt.ylabel('Amplitude')
+plt.grid(True)
+
+# Subplot for convolution
+plt.subplot(3, 1, 3)
+plt.plot(t, convolution)
+plt.title('Convolution of x1(t) and x2(t)')
+plt.xlabel('Time')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.subplots_adjust(hspace=0.5)
+
+plt.show()
+
 
 #Part C:
 #Problem C.1
@@ -163,12 +277,17 @@ h2 = lambda t: 4*np.exp(-t/5) * np.heaviside(t, 1)
 h3 = lambda t: 4*np.exp(-t) * np.heaviside(t, 1)
 h4 = lambda t: 4*(np.exp(-t/5) - np.exp(-t)) * np.heaviside(t, 1)
 
+h1_t= h1(t)
+h2_t= h1(t)
+h3_t= h1(t)
+h4_t= h1(t)
+
 t = np.arange(-1, 5, 0.001)
-plt.figure(figsize=(8, 14))
+plt.figure(figsize=(8, 16))
 
 # Subplot for h1(t)
 plt.subplot(4, 1, 1)
-plt.plot(t, h1(t), label='e^(t/5) * u(t)')
+plt.plot(t, h1_t, label='e^(t/5) * u(t)')
 plt.title('S1: h(t)')
 plt.xlabel('Time')
 plt.ylabel('Amplitude')
@@ -176,7 +295,7 @@ plt.grid(True)
 
 # Subplot for h2(t)
 plt.subplot(4, 1, 2)
-plt.plot(t, h2(t), label='4e^(-t/5) * u(t)')
+plt.plot(t, h2_t, label='4e^(-t/5) * u(t)')
 plt.title('S2: h2(t)')
 plt.xlabel('Time')
 plt.ylabel('Amplitude')
@@ -184,7 +303,7 @@ plt.grid(True)
 
 # Subplot for h3(t)
 plt.subplot(4, 1, 3)
-plt.plot(t, h3(t), label='4e^-t * u(t)')
+plt.plot(t, h3_t, label='4e^-t * u(t)')
 plt.title('S3: h3(t)')
 plt.xlabel('Time')
 plt.ylabel('Amplitude')
@@ -192,62 +311,30 @@ plt.grid(True)
 
 # Subplot for h4(t)
 plt.subplot(4, 1, 4)
-plt.plot(t, h4(t), label='4(e^(-t/5) - e^(-t)) * u(t)')
+plt.plot(t, h4_t, label='4(e^(-t/5) - e^(-t)) * u(t)')
 plt.title('S4: h4(t)')
 plt.xlabel('Time')
 plt.ylabel('Amplitude')
 plt.grid(True)
 
-plt.subplots_adjust(hspace=1)
+plt.subplots_adjust(hspace=0.5)
 
 plt.show()
+
+
 #Problem C.2
-#Define the Variables
-s = sp.symbols('s')
-t = sp.symbols('t')
 
-# Define your time functions with unit step functions
-u_t = sp.Heaviside(t)
-
-#Calculate the Laplace transform
-def h1(t):
-    return sp.exp(t / 5) * u_t
-
-def h2(t):
-    return 4 * sp.exp(-t / 5) * u_t
-
-def h3(t):
-    return 4 * sp.exp(-t) * u_t
-
-def h4(t):
-    return 4 * (sp.exp(-t / 5) - sp.exp(-t)) * u_t
-
-# Calculate the Laplace transforms for h1(t) to h4(t)
-H1_s = "exp(t/5)/(s-1)"
-H2_s = "4*exp(-t/5)/(s+1)"
-H3_s = "4/(s+1)"
-H4_s = "4*((1/(s+1))-(1/(s-1)))"
-
-# Calculate the eigenvalues (poles) using MATLAB
-eigenvalues_H1 = eng.roots(H1_s)
-eigenvalues_H2 = eng.roots(H2_s)
-eigenvalues_H3 = eng.roots(H3_s)
-eigenvalues_H4 = eng.roots(H4_s)
-
-# Print the eigenvalues for each system
-print("Eigenvalues (Poles) for S1:", eigenvalues_H1)
-print("Eigenvalues (Poles) for S2:", eigenvalues_H2)
-print("Eigenvalues (Poles) for S3:", eigenvalues_H3)
-print("Eigenvalues (Poles) for S4:", eigenvalues_H4)
 
 #Problem C.3
 
-#Problem C.4
+
+
 
 #Part D:
 #Problem D.1
 
+
 #Problem D.2
 
-#Show all of the plots
+#Show Remaining plots
 plt.show()
