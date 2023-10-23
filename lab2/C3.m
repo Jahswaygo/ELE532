@@ -1,12 +1,23 @@
-% CH2MP4.m : Chapter 2, MATLAB Program 4
-% Script M-file graphically demonstrates the convolution process.figure(1) 
-% Create figure window and make visible on screen
-u = @(t) 1.0*(t>=0);
-x = @(t) 1.5*(u(t)-u(t-1.5))-u(t-2)+u(t-2.5);
-h = @(t) 1.5*sin(pi*t).*(u(t)-u(t-1));
+%Define the u(t) function
+u = @(t) 1.0.* (t>=0);
+
+%Define the x(t) function.
+x = @(t) sin(5*t).*(u(t) - u(t - 3));
+
+%Truncate each impluse response funtion.
+h1 = @(t) exp(t/5).*(u(t)-u(t-20)); 
+h2 = @(t) 4*exp(-t/5).*(u(t)-u(t-20)); 
+h3 = @(t) 4*exp(-t).*(u(t)-u(t-20));
+h4 = @(t) 4*(exp(-t/5)-exp(-t)).*(u(t)-u(t-20));
+
+%Modified CH2MP4 from B.1
 dtau = 0.005;
-tau = -1:dtau:10.5;ti = 0; 
-tvec = -1:.1:10; y = NaN*zeros(1,length(tvec));
+tau = 0:dtau:20; ti = 0; 
+tvec = 0:.1:20; y = NaN*zeros(1,length(tvec));
+
+
+%Change This to see Each Function
+h=h1;
 
 % Pre-allocate memory
 for t = tvec,
@@ -25,10 +36,7 @@ for t = tvec,
     subplot(2,1,2),plot(tvec,y,"k",tvec(ti),y(ti),"ok");
     xlabel("t"); ylabel("y(t) = \int h(\tau)x(t-\tau) d\tau");
     axis([tau(1) tau(end) -1.0 2.0]); grid;
-        
-    if abs(t - 2.25) < 0.01 % Check if t is close to 2.25
-        pause; % Pause at t = 2.25
-    else
-        pause(0.001); % Pause for other time points
-    end
+    
+    drawnow;
 end
+
