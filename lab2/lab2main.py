@@ -1,4 +1,4 @@
-#Lab1 ELE532
+#Lab2 ELE532
 #Jahmil Ally (501045419)
 
 #Imports
