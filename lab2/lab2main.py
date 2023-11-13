@@ -8,7 +8,6 @@ import numpy as np
 import sympy as sp
 import scipy.io as sci
 import matplotlib.pyplot as plt
-import sounddevice as sd
 import matlab.engine
 
 #Variable Declaration
